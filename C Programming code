@@ -1,0 +1,85 @@
+/* C programming code for a simple Brute Force attacker that displays users info after cracking passwords which ranges from 0 to 10000 */
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#include<time.h>
+
+#define MAX_PASSWORD_LENGTH 15
+#define MAX_TRIES 10000
+
+typedef struct { 
+    char name[50]; 
+    char address[100]; 
+    char phone[15];
+    char email[50]; 
+    char father_name[50];
+    char mother_name[50];
+} UserInfo; 
+
+int main() {
+    char username[50], password[MAX_PASSWORD_LENGTH], choice[4];
+    char entered_password[MAX_PASSWORD_LENGTH];
+    UserInfo user_info;
+
+    printf("Enter your username: ");
+    scanf("%s", username);
+    
+    printf("Please enter a 4 digits pin: ");
+    scanf("%s", password);
+    
+    printf("Do you want to break the passcode (yes/no)? ");
+    scanf("%s", choice);
+
+    if (strcmp(choice, "yes") == 0) {
+        int i;
+        time_t start_time, end_time;
+        double elapsed_time;
+        time(&start_time);
+
+        for (i = 0; i < MAX_TRIES; i++) {
+            sprintf(entered_password, "%04d", i);
+
+            if (strcmp(entered_password, password) == 0) {
+                time(&end_time);
+                elapsed_time = difftime(end_time, start_time);
+                
+                printf("Password cracked successfully: %s\n", password);
+                printf("Elapsed time: %f seconds\n", elapsed_time);
+
+                // Now ask for password again to access user information
+                printf("Enter your password again to access your user information: ");
+                scanf("%s", entered_password);
+
+                if (strcmp(entered_password, password) == 0) {
+                    // Populate user_info
+                    strcpy(user_info.name, "Biraj Acharya");
+                    strcpy(user_info.address, "Dakshinkali, Kathmandu");
+                    strcpy(user_info.phone, "9884569658");
+                    strcpy(user_info.email, "BIraz@gmail.com");
+                    strcpy(user_info.father_name, "Hancy Acharya");
+                    strcpy(user_info.mother_name, "Beautiful Acharya");
+
+                    // Display user info (or do whatever needed)
+                    printf("Access granted! User information:\n");
+                    printf("Name: %s\n", user_info.name);
+                    printf("Address: %s\n", user_info.address);
+                    printf("Phone: %s\n", user_info.phone);
+                    printf("Email: %s\n", user_info.email);
+                    printf("Father's Name: %s\n", user_info.father_name);
+                    printf("Mother's Name: %s\n", user_info.mother_name);
+                } else {
+                    printf("Wrong password. No access to user info is given.\n");
+                }
+                break; // Exit loop after finding password
+            }
+        }
+        if (i == MAX_TRIES) {
+            printf("Unable to break the passcode.\n");
+        }
+    } else {
+        printf("Exiting the program.....\n");
+    }
+
+    return 0;
+}
